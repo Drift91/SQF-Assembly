@@ -3,6 +3,24 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  mod:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: HEMTT Build
+        uses: docker://hemtt/hemtt:0.7.6
+        with:
+          entrypoint: hemtt
+          args: build --release
+
+      - name: Upload mod
+        uses: actions/upload-artifact@v1
+        with:
+          name: 'mod'
+          path: releases/1.0.0/@SQF-Assembly
+
   windows:
     name: Windows (${{ matrix.arch }})
     runs-on: windows-2019
