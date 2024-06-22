@@ -142,7 +142,7 @@ public:
 	static const size_t typeIDHash = 0x8c0dbf90;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -178,7 +178,7 @@ public:
     static const size_t typeIDHash = 0xc04f83b1;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -207,7 +207,7 @@ public:
     static const size_t typeIDHash = 0x0ac32571;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -241,7 +241,7 @@ public:
     static const size_t typeIDHash = 0x72ff7d2d;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -276,7 +276,7 @@ public:
     static const size_t typeIDHash = 0x4b5efb7a;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -305,7 +305,7 @@ public:
     static const size_t typeIDHash = 0xd27a68ec;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -335,7 +335,7 @@ public:
     static const size_t typeIDHash = 0xc2bb0eeb;
 #endif
     static inline instructionVtable defVtable;
-	static inline void* vtablePtr;
+	static inline void* vtablePtr {nullptr};
     void setVtable() {
         VTABLESETTER
     }
@@ -352,6 +352,36 @@ public:
 
     GameInstructionNewExpression() { setVtable(); }
     GameInstructionNewExpression(std::nullptr_t) {}
+};
+
+class GameInstructionNular : public game_instruction {
+public:
+    const gsNular* cmd{ 0 };
+
+#ifdef _WIN64
+    static const size_t typeIDHash = 0x8c8d25005c965747;
+#else
+    static_assert(false, "Incomplete")
+    static const size_t typeIDHash = 0x0;
+#endif
+    static inline instructionVtable defVtable;
+    static inline void* vtablePtr {nullptr};
+    void setVtable() {
+        VTABLESETTER
+    }
+
+    template<class... _Types>
+    static ref<GameInstructionNular> make(_Types&&... _Args) {
+        return new GameInstructionNular(std::forward<_Types>(_Args)...);
+        //return rv_allocator<GameInstructionNular>::create_single(std::forward<_Types>(_Args)...);
+    }
+    //virtual void lastRefDeleted() const { rv_allocator<GameInstructionNular>::destroy_deallocate(const_cast<GameInstructionNewExpression*>(this)); }
+    virtual bool exec(game_state& state, vm_context& t) { return false; }
+    virtual int stack_size(void* t) const { return 0; }
+    virtual r_string get_name() const { return ""sv; }
+
+    GameInstructionNular(const gsNular* nular) : cmd(nular) { setVtable(); }
+    GameInstructionNular(std::nullptr_t) {}
 };
 
 class asshelper
